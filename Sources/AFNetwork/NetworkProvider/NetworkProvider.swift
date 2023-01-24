@@ -1,12 +1,10 @@
 import Foundation
 
 public protocol NetworkProvidable {
-    
-    associatedtype E
-    func request<T: Decodable>(type: T.Type, endpoint: E, completion: @escaping (Result<T, NetworkError>) -> Void)
+    func request<T: Decodable>(type: T.Type, endpoint: Endpoint, completion: @escaping (Result<T, NetworkError>) -> Void)
 }
 
-public final class NetworkProvider<E: Endpoint>: NetworkProvidable {
+public final class NetworkProvider: NetworkProvidable {
     private let session: URLSessionable
     private let globalQueue: Dispatching
     private let decoder: JSONDecodable
@@ -21,7 +19,7 @@ public final class NetworkProvider<E: Endpoint>: NetworkProvidable {
         self.decoder = decoder
     }
     
-    public func request<T: Decodable>(type: T.Type, endpoint: E, completion: @escaping (Result<T, NetworkError>) -> Void) {
+    public func request<T: Decodable>(type: T.Type, endpoint: Endpoint, completion: @escaping (Result<T, NetworkError>) -> Void) {
         
         let request = URLRequest(endpoint: endpoint)
         

@@ -1,6 +1,7 @@
 import Foundation
-
+import Combine
 public protocol NetworkProvidable {
+    func requestPublisher<T: Decodable>(type: T.Type, endpoint: Endpoint) -> AnyPublisher<T, NetworkError>
     func request<T: Decodable>(type: T.Type, endpoint: Endpoint, completion: @escaping (Result<T, NetworkError>) -> Void)
 }
 
